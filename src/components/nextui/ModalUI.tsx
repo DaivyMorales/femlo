@@ -15,7 +15,6 @@ import {
 import { useFormik } from "formik";
 import { api } from "../../utils/api";
 import { HiBadgeCheck } from "react-icons/hi";
-import Confetti from "../Confetti";
 import { useWaitlist } from "@/store/WaitlistSlice";
 
 interface ModalProps {
