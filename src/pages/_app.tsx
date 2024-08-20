@@ -54,21 +54,33 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Providers>
         <Head>
           <link rel="icon" href="/favicon.png" />
-          <title>
-            Femlo - Generate confidence, Generate more sells in a beautiful way
-          </title>
+          <title>Femlo - Generate confidence, and sell in seconds</title>
+          <meta name="description" content="" />
 
+          <meta property="og:url" content="https://www.femlo.cfd/" />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:title"
+            content="Femlo - Generate confidence, and sell in seconds"
+          />
+          <meta property="og:description" content="" />
           <meta
             property="og:image"
             content="https://res.cloudinary.com/dayloxa2a/image/upload/v1724163090/roynlbztxkqcwk9mvssr.png"
           />
-          <meta property="og:image:alt" content="Femlo preview image" />
 
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta property="twitter:domain" content="femlo.cfd" />
+          <meta property="twitter:url" content="https://www.femlo.cfd/" />
+          <meta
+            name="twitter:title"
+            content="Femlo - Generate confidence, and sell in seconds"
+          />
+          <meta name="twitter:description" content="" />
           <meta
             name="twitter:image"
             content="https://res.cloudinary.com/dayloxa2a/image/upload/v1724163090/roynlbztxkqcwk9mvssr.png"
           />
-          <meta name="twitter:image:alt" content="Femlo preview image" />
         </Head>
         <main
           className={`font-satochi ${Satochi.className} ${Satochi.variable} ${caveat.variable} `}
