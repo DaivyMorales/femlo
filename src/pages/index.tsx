@@ -134,11 +134,11 @@ function Home() {
       <div className="flex h-[1000px] w-full flex-col items-center justify-start gap-[100px] overflow-hidden">
         <div className="mt-[50px] w-[600px]">
           <div className="flex flex-col items-center justify-center gap-8">
-            <h1 className="text-center">
-            Generate <span className="bg-blue-100 text-blue-800">confidence</span> in a beautiful way
+            <h1 className="text-center w-[800px]">
+            Generate confidence, <br />and sell in seconds
             </h1>
             <p className="text-center">
-            Create eye-catching “Trusted By” sections for your SaaS,
+            Create eye-catching “Trusted By” sections for your landing-page,
              build credibility and trust with your audience.
             </p>
             <div className="flex flex-col items-center gap-1">

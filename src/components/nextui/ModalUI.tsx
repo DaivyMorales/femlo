@@ -136,7 +136,7 @@ export default function ModalUI({ size, text }: ModalProps) {
                       the future, I invite you to{" "}
                       <span className="font-bold text-black">
                         join the waitlist
-                      </span>
+                      </span> by entering your email below.
                     </p>
                     <p className="text-sm text-neutral-700">
                       If you have any comments, feel free to DM me on X and I
