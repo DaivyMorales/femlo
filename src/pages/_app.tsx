@@ -15,6 +15,7 @@ import "prism-themes/themes/prism-vsc-dark-plus.css";
 import { Providers } from "../components/nextui/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Head from "next/head";
 
 const Satochi = localfont({
   src: [
@@ -51,12 +52,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <Providers>
+        <Head>
+          <link rel="icon" href="/favicon.png" />
+          <title>Femlo - Generate confidence in a beautiful way</title>
+        </Head>
         <main
           className={`font-satochi ${Satochi.className} ${Satochi.variable} ${caveat.variable} `}
         >
           <Navbar>
             <Component {...pageProps} />
-            <Footer/>
+            <Footer />
           </Navbar>
         </main>
       </Providers>
