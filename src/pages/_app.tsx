@@ -68,6 +68,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
             property="og:image"
             content="https://res.cloudinary.com/dayloxa2a/image/upload/v1724163090/roynlbztxkqcwk9mvssr.png"
           />
+          <script defer data-domain="femlo.cfd" src="https://plausible.io/js/script.js"></script>
+
 
           <meta name="twitter:card" content="summary_large_image" />
           <meta property="twitter:domain" content="femlo.cfd" />
