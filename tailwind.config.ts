@@ -12,6 +12,7 @@ export default {
       fontFamily: {
         satochi: ["var(--font-satochi)"],
         caveat: ["var(--font-caveat)"],
+        faktum: ["var(--font-faktum)"],
       },
     },
   },

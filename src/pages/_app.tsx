@@ -43,6 +43,20 @@ const Satochi = localfont({
   variable: "--font-satochi",
 });
 
+const Faktum = localfont({
+  src: [
+    {
+      path: "../../public/fonts/Faktum-Regular.otf",
+      weight: "400",
+    },
+    {
+      path: "../../public/fonts/Faktum-Bold.otf",
+      weight: "700",
+    },
+  ],
+  variable: "--font-faktum",
+});
+
 const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat" });
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -68,8 +82,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
             property="og:image"
             content="https://res.cloudinary.com/dayloxa2a/image/upload/v1724163090/roynlbztxkqcwk9mvssr.png"
           />
-          <script defer data-domain="femlo.cfd" src="https://plausible.io/js/script.js"></script>
-
+          <script
+            defer
+            data-domain="femlo.cfd"
+            src="https://plausible.io/js/script.js"
+          ></script>
 
           <meta name="twitter:card" content="summary_large_image" />
           <meta property="twitter:domain" content="femlo.cfd" />
@@ -85,7 +102,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
         </Head>
         <main
-          className={`font-satochi ${Satochi.className} ${Satochi.variable} ${caveat.variable} `}
+          className={`font-satochi ${Satochi.className} ${Satochi.variable} ${caveat.variable} ${Faktum.variable}`}
         >
           <Navbar>
             <Component {...pageProps} />

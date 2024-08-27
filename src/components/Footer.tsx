@@ -9,7 +9,7 @@ function Footer() {
       <div className="flex h-screen w-full flex-col items-start px-10 justify-center border-t gap-10 border-neutral-100 p-4 text-neutral-700 sm:h-full sm:p-6 sm:p-0 sm:items-center sm:justify-center">
         <ul className="flex flex-col justify-start gap-10 md:flex-row md:items-start md:justify-center  md:gap-20 ">
           <li className="space-y-3">
-            <h3 className="text-[18px] font-bold text-black">Product</h3>
+            <h4 className="text-[18px] font-bold text-black">Product</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="#how-it-works" className="text-sm hover:underline">
@@ -24,7 +24,7 @@ function Footer() {
             </ul>
           </li>
           <li className="space-y-3">
-            <h3 className="text-[18px] font-bold text-black">Resources</h3>
+            <h4 className="text-[18px] font-bold text-black">Resources</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-sm hover:underline">
@@ -39,7 +39,7 @@ function Footer() {
             </ul>
           </li>
           <li className="space-y-3">
-            <h3 className="text-[18px] font-bold text-black">Contact</h3>
+            <h4 className="text-[18px] font-bold text-black">Contact</h4>
             <ul className="space-y-2">
               <li>
                 <Link
