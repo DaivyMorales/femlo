@@ -129,8 +129,9 @@ function Home() {
   
   const query = api.waitlist.getWaitlistNumber.useQuery()
 
+
   return (
-    <div className="relative flex h-full w-screen flex-col items-center justify-start overflow-hidden">
+    <div className="relative flex h-full w-screen flex-col items-center justify-start overflow-hidden px-3">
       <div className="flex h-[1000px] w-full flex-col items-center justify-start gap-[100px] overflow-hidden">
         <div className="mt-[50px] w-[600px]">
           <div className="flex flex-col items-center justify-center gap-8">

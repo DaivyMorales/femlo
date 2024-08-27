@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 
-
 body {
   font-family: var(--font-satochi);
 }
 
 h1 {
-  @apply text-7xl font-black tracking-tighter;
+  @apply text-4xl font-black tracking-tighter md:text-7xl;
 }
 h2 {
   @apply text-4xl font-black tracking-tighter;
@@ -20,5 +19,5 @@ h3 {
 }
 
 p {
-  @apply text-lg font-normal text-neutral-500;
+  @apply text-sm font-normal text-neutral-500 md:text-lg;
 }
