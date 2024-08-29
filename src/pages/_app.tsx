@@ -104,10 +104,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <main
           className={`font-satochi ${Satochi.className} ${Satochi.variable} ${caveat.variable} ${Faktum.variable}`}
         >
-          <Navbar>
+          {/* <Navbar> */}
             <Component {...pageProps} />
-            <Footer />
-          </Navbar>
+            {/* <Footer /> */}
+          {/* </Navbar> */}
         </main>
       </Providers>
     </SessionProvider>

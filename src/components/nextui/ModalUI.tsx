@@ -16,6 +16,7 @@ import { useFormik } from "formik";
 import { api } from "../../utils/api";
 import { HiBadgeCheck } from "react-icons/hi";
 import { useWaitlist } from "@/store/WaitlistSlice";
+import { TiMediaPlay } from "react-icons/ti";
 
 interface ModalProps {
   size: "sm" | "md" | "lg" | undefined;
@@ -73,9 +74,10 @@ export default function ModalUI({ size, text }: ModalProps) {
         <Button
           variant="flat"
           onPress={() => handleOpen("opaque")}
-          className="bg-blue-500 font-semibold capitalize text-white"
+          className="bg-blue-600 font-semibold capitalize text-white rounded-full"
           size={size}
           isDisabled={data.id !== "" ? true : false}
+          endContent={<TiMediaPlay size={15} />}
         >
           {data.id !== "" ? "You're in!" : text}
         </Button>

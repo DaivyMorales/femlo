@@ -126,51 +126,28 @@ function Home() {
     { component: Npm, size: 120 },
     { component: Google, size: 120 },
   ];
-  
-  const query = api.waitlist.getWaitlistNumber.useQuery()
 
+  const query = api.waitlist.getWaitlistNumber.useQuery();
 
   return (
     <div className="relative flex h-full w-screen flex-col items-center justify-start overflow-hidden px-3">
-      <div className="flex h-[1000px] w-full flex-col items-center justify-start gap-[100px] overflow-hidden">
-        <div className="mt-[50px] w-[600px]">
-          <div className="flex flex-col items-center justify-center gap-8">
-            <h1 className="text-center w-[800px]">
-            Generate confidence, <br />and sell in seconds
+      <div className="flex relative h-screen w-full  flex-col items-center justify-center overflow-hidden">
+        <div className="flex   items-center justify-center">
+          <div className="flex flex-col items-start justify-center gap-7">
+            <h1 className="text-start">
+              Your assets, <br />
+              your rules
             </h1>
-            <p className="text-center">
-            Create eye-catching “Trusted By” sections for your landing-page,
-             build credibility and trust with your audience.
+            <p className="text-start">
+              Create eye-catching <span className="font-medium">“Trusted By”</span> sections for your landing-page.
             </p>
+
             <div className="flex flex-col items-center gap-1">
-              {/* <Button size="lg" className="font-semibold">
-                Try now
-              </Button> */}
               <ModalIU size="lg" text="Create Now" />
-              <p className="text-[15px]">Join in the wailist.</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <AvatarGroup
-                isBordered
-                max={3}
-                total={10}
-                renderCount={(count) => (
-                  <p className="ms-2 text-small font-medium text-foreground">
-                    +{query.data} waiting for Femlo
-                  </p>
-                )}
-              >
-                <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
-                <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
-                <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
-                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
-                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
-                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
-              </AvatarGroup>
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center gap-2">
+        <div className=" absolute top-[550px] flex flex-col items-center justify-center gap-2 md:block">
           <motion.div
             className="flex items-center gap-10 rounded-xl px-7 py-1"
             variants={containerVariants}
@@ -206,14 +183,14 @@ function Home() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <div className="py-[1px ] absolute -bottom-[10px] right-8 rounded-sm bg-blue-600 px-1 font-sans text-[8px] font-semibold text-white">
+                    <div className="py-[1px] absolute -bottom-[10px] right-8 rounded-sm bg-blue-600 px-1 font-sans text-[8px] font-semibold text-white">
                       ProductHunt.svg
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
               <motion.div style={{ fill: colorTransform }}>
-                <ProductHunt className="h-[65px]" style={{ fontSize: 180 }} />
+                <ProductHunt className="h-[65px]" style={{ fontSize: 120 }} />
               </motion.div>
             </motion.div>
 
@@ -253,7 +230,7 @@ function Home() {
                 )}
               </AnimatePresence>
               <motion.div style={{ fill: colorTransform }}>
-                <Supabase style={{ fontSize: 180 }} />
+                <Supabase style={{ fontSize: 120 }} />
               </motion.div>
             </motion.div>
 
@@ -386,10 +363,10 @@ function Home() {
           </motion.p>
         </div>
       </div>
-      <div  className="flex h-screen w-full items-center justify-center">
+      <div className="flex h-screen w-full items-center justify-center">
         <div className="items-e flex h-screen w-[1000px] flex-col justify-center gap-6 px-24">
           <div className="flex w-full flex-col items-start justify-start gap-5">
-            <p   className="font-caveat text-2xl font-bold text-[#5DC34E]">
+            <p className="font-caveat text-2xl font-bold text-[#5DC34E]">
               Speed
             </p>
             <h2 className="flex items-center gap-3 text-start text-5xl">
@@ -412,7 +389,10 @@ function Home() {
           <img src="/Iphone.png" alt="" />
         </div>
       </div>
-      <div id="how-it-works" className="relative flex h-screen w-full items-start justify-start bg-blue-600">
+      <div
+        id="how-it-works"
+        className="relative flex h-screen w-full items-start justify-start bg-blue-600"
+      >
         <div className="flex h-screen w-[520px] flex-col items-start justify-center gap-6 px-10">
           <p className="font-caveat text-2xl font-bold text-[#5DC34E]">
             Interactive
@@ -470,20 +450,16 @@ function Home() {
             <ModalIU size="lg" text="Try Now" />
           </div>
         </div>
-        <section className="flex items-center justify-center">
-          <div className="flex w-[520px] flex-col items-start justify-center gap-10 px-10">
-            <h2 className="flex items-center gap-3 text-start text-5xl">
-              Copy + Page
-            </h2>
+        <section className="flex h-screen flex-col items-center justify-center">
+          <div className="flex flex-col items-start justify-center gap-6 px-10">
+            <h1 className="flex items-center gap-3 text-start">Copy + Paste</h1>
             <p className="text-start text-neutral-400">
               Get the exact code of the section you built and paste it into any{" "}
               <span className="font-bold text-neutral-500">web project</span>.
             </p>
-
-            <ModalIU size="lg" text="Try Now" />
           </div>
           <div className="flex flex-col items-center justify-center gap-4">
-            <p className="font-caveat text-2xl font-bold text-[#5DC34E]">
+            <p className="hidden font-caveat text-2xl font-bold text-[#5DC34E] md:block">
               Easiest
             </p>
             <div className="rotate-[2deg] rounded-[10px] border-[1px] bg-white shadow-sm">
@@ -503,7 +479,7 @@ function Home() {
                   <BiSave color="#a3a3a3" />
                 </motion.div>
               </div>
-              <div className="flex items-center justify-start px-4">
+              <div className="flex items-center justify-start px-4 md:block">
                 <div className="h-[240px] w-[30px] border-r-[1px] border-neutral-100"></div>
                 <CodeBlock />
               </div>

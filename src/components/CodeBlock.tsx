@@ -17,8 +17,9 @@ const CodeBlock = () => {
 </html>`;
   return (
     <SyntaxHighlighter language="javascript" customStyle={{
-     height: "240px",
-     width: "600px"
+     height: "140px",
+     width: "200px",
+     fontSize: "1px",
     }} style={lightfair}>
       {codeString}
     </SyntaxHighlighter>
