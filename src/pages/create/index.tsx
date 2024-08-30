@@ -1,34 +1,18 @@
-import {
-  Amazon,
-  Femlo,
-  GitHub,
-  LemonSqueezy,
-  ProductHunt,
-  Spotify,
-  Uber,
-} from "@/components/svgs";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import InputSearch from "@/components/InputSearch";
 import Toolbar from "@/components/Toolbar";
 import { api } from "@/utils/api";
 
-const DEFAULTS_COLUMNS = [
-  { id: "a" },
-  //   { id: "b" },
-  //   { id: "c" },
-  //   { id: "d" },
-  //   { id: "e" },
-];
-
 function Create() {
   const query = api.space.getSpaces.useQuery();
-
-  console.log(query.data)
-
-  const [columns] = useState([]);
+  const [columns, setColumns] = useState(query.data);
   const [isActive, setIsActive] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setColumns(query.data);
+  }, [query.data]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,6 +39,7 @@ function Create() {
             {columns &&
               columns.map(({ id }) => (
                 <motion.div
+                  key={id}
                   draggable
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.8 }}
@@ -67,8 +52,7 @@ function Create() {
           </div>
           {isActive && (
             <div ref={searchRef}>
-              {" "}
-              <InputSearch />{" "}
+              <InputSearch />
             </div>
           )}
         </div>
