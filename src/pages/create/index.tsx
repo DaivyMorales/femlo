@@ -7,51 +7,72 @@ import {
   Spotify,
   Uber,
 } from "@/components/svgs";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import InputSearch from "@/components/InputSearch";
+import Toolbar from "@/components/Toolbar";
+import { api } from "@/utils/api";
 
 const DEFAULTS_COLUMNS = [
   { id: "a" },
-  { id: "b" },
-  { id: "c" },
-  { id: "d" },
-  { id: "e" },
-];
-
-const DEFAULT_CARDS = [
-  { id: 1, component: Amazon, column: "a", size: 80 },
-  { id: 2, component: Femlo, column: "b", size: 50 },
-  { id: 3, component: Uber, column: "c", size: 70 },
-  { id: 4, component: GitHub, column: "d", size: 70 },
-  { id: 5, component: LemonSqueezy, column: "e", size: 100 },
+  //   { id: "b" },
+  //   { id: "c" },
+  //   { id: "d" },
+  //   { id: "e" },
 ];
 
 function Create() {
-  const [cards] = useState(DEFAULT_CARDS);
-  const [columns] = useState(DEFAULTS_COLUMNS);
+  const query = api.space.getSpaces.useQuery();
 
-  const cardsByColumn = columns.map(({ id }) => ({
-    id,
-    cards: cards.filter((card) => card.column === id),
-  }));
+  console.log(query.data)
+
+  const [columns] = useState([]);
+  const [isActive, setIsActive] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setIsActive(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
-      <div className="flex flex-col items-center justify-center gap-5">
-        <div className="flex items-center gap-6">
-          {cardsByColumn.map(({ id, cards }) => (
-            <div className="h-[80px] w-[130px] rounded-xl border-[1px] border-dashed border-neutral-200 bg-neutral-50 shadow-sm"></div>
-            //   <div key={id} className="flex flex-col items-center gap-2">
-            //     {cards.map(({ id, component: Component, size, column }) => (
-            //       <Card id={id} component={Component} size={size} column={column} />
-            //     ))}
-            //   </div>
-          ))}
+      <AnimatePresence mode="popLayout">
+        <div className="flex flex-col items-center justify-center gap-5">
+          <Toolbar />
+          <div className="flex items-center gap-6">
+            {columns &&
+              columns.map(({ id }) => (
+                <motion.div
+                  draggable
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                  onClick={() => setIsActive(true)}
+                  className="flex h-[80px] w-[130px] cursor-pointer items-center justify-center rounded-xl border-[1px] border-dashed border-neutral-200 bg-neutral-50 font-semibold text-neutral-200 shadow-sm"
+                >
+                  1
+                </motion.div>
+              ))}
+          </div>
+          {isActive && (
+            <div ref={searchRef}>
+              {" "}
+              <InputSearch />{" "}
+            </div>
+          )}
         </div>
-        <InputSearch/>
-      </div>
-      
+      </AnimatePresence>
     </div>
   );
 }

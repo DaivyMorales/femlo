@@ -21,3 +21,30 @@ export { default as GitHub } from "./GitHub.svg";
 export { default as Uber } from "./Uber.svg";
 export { default as LemonSqueezy } from "./LemonSqueezy.svg";
 export { default as Femlo } from "./Femlo.svg";
+
+
+export const icons = [
+    { name: "Nextjs" },
+    { name: "ProductHunt" },
+    { name: "Supabase" },
+    { name: "Forbes" },
+    { name: "Meta" },
+    { name: "Amazon" },
+    { name: "MacPointer" },
+    { name: "Spotify" },
+    { name: "X" },
+    { name: "Reddit" },
+    { name: "Booking" },
+    { name: "Discord" },
+    { name: "TikTok" },
+    { name: "Npm" },
+    { name: "Google" },
+    { name: "YouTube" },
+    { name: "TheNewYorkTime" },
+    { name: "Airbnb" },
+    { name: "Stripe" },
+    { name: "GitHub" },
+    { name: "Uber" },
+    { name: "LemonSqueezy" },
+    { name: "Femlo" },
+  ];
