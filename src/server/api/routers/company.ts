@@ -2,14 +2,24 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const companyRouter = createTRPCRouter({
-  //   create: publicProcedure.mutation(async ({ ctx }) => {
-  //     return ctx.db.space.create({ data: { name: "" } });
-  //   }),
-
   getCompanies: publicProcedure.query(async ({ ctx }) => {
     const allSpaces = await ctx.db.company.findMany();
     return allSpaces;
   }),
+
+  getCompanyById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const company = await ctx.db.company.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!company) {
+        throw new Error(`Company with id ${input.id} not found.`);
+      }
+
+      return company;
+    }),
 
   searchCompanies: publicProcedure
     .input(
@@ -23,6 +33,7 @@ export const companyRouter = createTRPCRouter({
           OR: [
             { svgName: { contains: input.query, mode: "insensitive" } },
             { defaultSize: { contains: input.query, mode: "insensitive" } },
+            { id: { contains: input.query, mode: "insensitive" } },
           ],
         },
       });

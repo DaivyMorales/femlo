@@ -1,4 +1,5 @@
 import { Caveat } from "next/font/google";
+import { M_PLUS_Rounded_1c } from "next/font/google";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
@@ -58,7 +59,10 @@ const Faktum = localfont({
 });
 
 const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat" });
-
+const m_plus = M_PLUS_Rounded_1c({ 
+  subsets: ["latin"], 
+  weight: ["100", "300", "400", "500", "700", "800", "900"]
+});
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -102,7 +106,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
         </Head>
         <main
-          className={`font-satochi ${Satochi.className} ${Satochi.variable} ${caveat.variable} ${Faktum.variable}`}
+          className={`font-satochi ${m_plus.className}  ${caveat.variable} ${Faktum.variable}`}
         >
           {/* <Navbar> */}
             <Component {...pageProps} />
