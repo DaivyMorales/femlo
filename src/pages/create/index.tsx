@@ -49,7 +49,7 @@ function Create() {
               columns.map(({ id, companyId }) => (
                 <Column
                   id={id}
-                  companyId={companyId}
+                  companyId={companyId || "defaultId"}
                   setIsActive={setIsActive}
                 />
               ))}
@@ -117,7 +117,9 @@ const Column = ({
 
   const { svg } = useSvgState();
 
-  const IconComponent = (svgIcons as SvgIconsType)[svg?.svgName || data?.svgName];
+  const IconComponent = (svgIcons as SvgIconsType)[
+    svg?.svgName ?? data?.svgName ?? ""
+  ];
 
   return (
     <>
