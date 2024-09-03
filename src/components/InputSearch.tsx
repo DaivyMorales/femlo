@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { api } from "@/utils/api";
 import { useSvgState } from "@/store/SvgSlice";
 import { TbTrash } from "react-icons/tb";
+import { useOpen } from "@/store/OpenSlice";
+import { useGlobalData } from "@/store/GlobalDataSlice";
 
 interface InputSearchProps {
   setColumns: React.Dispatch<
@@ -39,8 +41,12 @@ function InputSearch() {
   }, [searchTerm, refetch]);
 
   const { setSvg } = useSvgState();
+  const { columnId, setOnHover } = useOpen();
+  const { deleteColumn } = useGlobalData();
+  
 
   const { mutate, error } = api.space.updateSpace.useMutation();
+  const { mutateAsync } = api.space.deleteSpace.useMutation();
 
   return (
     <AnimatePresence>
@@ -56,7 +62,7 @@ function InputSearch() {
         <div
           className={`flex w-[300px] flex-col items-start justify-center gap-3 rounded-xl border-[1px] pt-4 ${
             isFocused ? "border-blue-300 shadow-blue-200" : "border-neutral-200"
-          } bg-neutral-50 px-5 pb-3 shadow-sm transition-colors duration-200`}
+          } bg-neutral-50  px-5 pb-3 shadow-sm transition-colors duration-200`}
         >
           <div className="flex items-center justify-center gap-3">
             <img
@@ -70,7 +76,7 @@ function InputSearch() {
               className="h-[50px] w-[200px] bg-transparent p-2 text-sm outline-none"
               type="text"
               id="placeholder"
-              placeholder="Search companies"
+              placeholder="Search company"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -83,7 +89,15 @@ function InputSearch() {
               !searchTerm ? "" : "border-b-[1px] pb-3"
             } text-neutral-400`}
           >
-            <button className="cursor">
+            <button
+              onMouseEnter={() => setOnHover("delete")}
+              onMouseLeave={() => setOnHover("")}
+              onClick={async () => {
+                deleteColumn(columnId);
+                await mutateAsync({ id: columnId });
+              }}
+              className="cursor hover:bg-neutral-100 p-1 rounded-lg"
+            >
               <TbTrash size={18} />
             </button>
             <button className="cursor">
@@ -108,7 +122,7 @@ function InputSearch() {
                         defaultSize,
                       });
                       mutate({
-                        id: "cjj9c9wph0000p6v9r2l2n4yi",
+                        id: columnId,
                         companyId: id,
                       });
                     }}

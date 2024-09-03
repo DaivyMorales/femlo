@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   font-family: var(--font-satochi);
 }
@@ -24,4 +23,16 @@ h4 {
 
 p {
   @apply text-sm font-normal text-neutral-500 md:text-lg;
+}
+
+/* ANIMATIONS */
+
+/* styles.css */
+.transition-border-shadow {
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+/* styles.css */
+.svg-transition {
+  transition: fill 300ms ease;
 }

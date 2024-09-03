@@ -9,30 +9,32 @@ import { Dispatch, SetStateAction } from "react";
 import { LuPlus } from "react-icons/lu";
 import { TbTrash } from "react-icons/tb";
 import Column from "@/components/Column";
-
-
+import { Space, useGlobalData } from "@/store/GlobalDataSlice";
 
 function Create() {
   const query = api.space.getSpaces.useQuery();
   const mutation = api.space.create.useMutation();
-  const [columns, setColumns] = useState(query.data);
   const [isActive, setIsActive] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
+  const { columns, setColumns, createColumn } = useGlobalData();
+
   useEffect(() => {
-    setColumns(query.data);
+    if (query.data) {
+      setColumns(query.data);
+    }
   }, [query.data]);
 
   const handleAddColumn = async () => {
     try {
       const newColumn = await mutation.mutateAsync();
-      setColumns((prevColumns) => [...(prevColumns || []), newColumn]);
+      createColumn(newColumn)
     } catch (error) {
       console.error("Error creating column:", error);
     }
   };
 
-  useEffect(() => {}, []);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -53,7 +55,7 @@ function Create() {
   const { setSpaces } = useSvgState();
 
   return (
-    <div className="flex  h-screen w-screen flex-col items-center justify-center gap-4">
+    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
       <AnimatePresence mode="popLayout">
         <div className="flex flex-col items-center justify-center gap-5">
           {/* <Toolbar /> */}
@@ -123,7 +125,5 @@ const DropIndicator = ({ beforeId, column }: any) => {
     ></div>
   );
 };
-
-
 
 export default Create;

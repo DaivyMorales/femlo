@@ -6,6 +6,14 @@ export const spaceRouter = createTRPCRouter({
     return ctx.db.space.create({ data: { name: "" } });
   }),
 
+  deleteSpace: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.space.delete({
+        where: { id: input.id },
+      });
+    }),
+
   getSpaces: publicProcedure.query(async ({ ctx }) => {
     const allSpaces = await ctx.db.space.findMany();
     return allSpaces;

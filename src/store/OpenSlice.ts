@@ -8,11 +8,17 @@ export interface Space {
 export interface OpenProps {
   columnId: string;
   setColumnId: (id: string) => void;
+  onHover: string;
+  setOnHover: (icon: string) => void;
 }
 
 export const useOpen = create<OpenProps>((set) => ({
   columnId: "",
   setColumnId: (id: string) => {
     set(() => ({ columnId: id }));
+  },
+  onHover: "",
+  setOnHover: (icon: string) => {
+    set(() => ({ onHover: icon }));
   },
 }));
