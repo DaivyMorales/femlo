@@ -1,9 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, SetStateAction } from "react";
 import { TbArtboard, TbSend } from "react-icons/tb";
 import * as svgIcons from "./svgs";
 import { AnimatePresence, motion } from "framer-motion";
 import { api } from "@/utils/api";
 import { useSvgState } from "@/store/SvgSlice";
+import { TbTrash } from "react-icons/tb";
+
+interface InputSearchProps {
+  setColumns: React.Dispatch<
+    React.SetStateAction<
+      | {
+          id: string;
+          name: string;
+          companyId: string | null;
+        }[]
+      | undefined
+    >
+  >;
+}
 
 type SvgIconsType = typeof svgIcons & {
   [key: string]: React.ComponentType<any>;
@@ -69,6 +83,9 @@ function InputSearch() {
               !searchTerm ? "" : "border-b-[1px] pb-3"
             } text-neutral-400`}
           >
+            <button className="cursor">
+              <TbTrash size={18} />
+            </button>
             <button className="cursor">
               <TbArtboard size={20} />
             </button>
