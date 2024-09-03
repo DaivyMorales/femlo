@@ -8,24 +8,22 @@ import { TbTrash } from "react-icons/tb";
 import { useOpen } from "@/store/OpenSlice";
 import { useGlobalData } from "@/store/GlobalDataSlice";
 
+export interface svgProps {
+  id: string;
+  svgName: string;
+  defaultSize: string | null;
+}
+
 interface InputSearchProps {
-  setColumns: React.Dispatch<
-    React.SetStateAction<
-      | {
-          id: string;
-          name: string;
-          companyId: string | null;
-        }[]
-      | undefined
-    >
-  >;
+  svg: any;
+  setSvg: any
 }
 
 type SvgIconsType = typeof svgIcons & {
   [key: string]: React.ComponentType<any>;
 };
 
-function InputSearch() {
+function InputSearch({ svg, setSvg }: InputSearchProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -40,10 +38,8 @@ function InputSearch() {
     }
   }, [searchTerm, refetch]);
 
-  const { setSvg } = useSvgState();
   const { columnId, setOnHover } = useOpen();
   const { deleteColumn } = useGlobalData();
-  
 
   const { mutate, error } = api.space.updateSpace.useMutation();
   const { mutateAsync } = api.space.deleteSpace.useMutation();
@@ -62,7 +58,7 @@ function InputSearch() {
         <div
           className={`flex w-[300px] flex-col items-start justify-center gap-3 rounded-xl border-[1px] pt-4 ${
             isFocused ? "border-blue-300 shadow-blue-200" : "border-neutral-200"
-          } bg-neutral-50  px-5 pb-3 shadow-sm transition-colors duration-200`}
+          } bg-neutral-50 px-5 pb-3 shadow-sm transition-colors duration-200`}
         >
           <div className="flex items-center justify-center gap-3">
             <img
@@ -96,7 +92,7 @@ function InputSearch() {
                 deleteColumn(columnId);
                 await mutateAsync({ id: columnId });
               }}
-              className="cursor hover:bg-neutral-100 p-1 rounded-lg"
+              className="cursor rounded-lg p-1 hover:bg-neutral-100"
             >
               <TbTrash size={18} />
             </button>

@@ -28,13 +28,11 @@ function Create() {
   const handleAddColumn = async () => {
     try {
       const newColumn = await mutation.mutateAsync();
-      createColumn(newColumn)
+      createColumn(newColumn);
     } catch (error) {
       console.error("Error creating column:", error);
     }
   };
-
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,15 +64,19 @@ function Create() {
             >
               <LuPlus color="#a1a1aa" size={10} />
             </button>
-            {columns &&
-              columns.map(({ id, companyId }) => (
-                <Column
-                  key={id}
-                  id={id}
-                  companyId={companyId || "defaultId"}
-                  setIsActive={setIsActive}
-                />
-              ))}
+            {columns && (
+              <AnimatePresence mode="popLayout">
+                {" "}
+                {columns.map(({ id, companyId }) => (
+                  <Column
+                    key={id}
+                    id={id}
+                    companyId={companyId || "defaultId"}
+                    setIsActive={setIsActive}
+                  />
+                ))}
+              </AnimatePresence>
+            )}
             <button
               onClick={handleAddColumn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"

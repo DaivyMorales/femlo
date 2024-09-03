@@ -1,10 +1,10 @@
-import { useSvgState } from "@/store/SvgSlice";
 import { api } from "@/utils/api";
-import { SetStateAction, useEffect } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import * as svgIcons from "../components/svgs";
 import { motion } from "framer-motion";
 import InputSearch from "./InputSearch";
 import { useOpen } from "@/store/OpenSlice";
+import { svgProps } from "./InputSearch";
 
 type SvgIconsType = typeof svgIcons & {
   [key: string]: React.ComponentType<any>;
@@ -23,20 +23,28 @@ const Column = ({
     id: companyId,
   });
 
+  const [svg, setSvg] = useState<svgProps | undefined>(
+    data as svgProps | undefined,
+  );
+  const [isHovered, setIsHovered] = useState(false); // Local hover state
+
   useEffect(() => {
     refetch();
-  }, [id]);
-
-  const { svg } = useSvgState();
+    setSvg(data as svgProps);
+  }, [id, data]);
 
   const IconComponent = (svgIcons as SvgIconsType)[
-    svg?.svgName ?? data?.svgName ?? ""
+    svg?.svgName || data?.svgName || ""
   ];
 
-  const { columnId, setColumnId, onHover } = useOpen();
+  const { onHover, columnId, setColumnId } = useOpen();
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+    //   onMouseEnter={() => setIsHovered(true)}
+    //   onMouseLeave={() => setIsHovered(false)}
+    >
       <motion.div
         initial={{ scale: 0.9 }}
         key={id}
@@ -50,6 +58,7 @@ const Column = ({
           setIsActive(true);
           setColumnId(id);
         }}
+        exit={{ scale: 0 }}
         className={`flex h-[80px] w-[130px] cursor-pointer items-center justify-center rounded-xl border-[1px] border-dashed ${
           columnId === id || columnId === "" ? "opacity-100" : "opacity-50"
         } ${
@@ -60,15 +69,15 @@ const Column = ({
       >
         {IconComponent ? (
           <IconComponent
-            className={`${onHover === "delete" ? "fill-red-300" : "fill-neutral-400"} svg-transition `}
+            className={`${onHover === "delete" && columnId === id ? "fill-red-300" : "fill-neutral-400"} svg-transition`}
             style={{ fontSize: 90 }}
           />
         ) : (
-          <span>1</span>
+          <span>¿?</span>
         )}
       </motion.div>
       <div className="absolute -right-[90px] top-[100px]">
-        {columnId === id && <InputSearch />}
+        {columnId === id && <InputSearch svg={svg} setSvg={setSvg} />}
       </div>
     </div>
   );
