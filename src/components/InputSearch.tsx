@@ -16,14 +16,15 @@ export interface svgProps {
 
 interface InputSearchProps {
   svg: any;
-  setSvg: any
+  setSvg: any;
+  searchRef: React.ForwardedRef<HTMLDivElement>;
 }
 
 type SvgIconsType = typeof svgIcons & {
   [key: string]: React.ComponentType<any>;
 };
 
-function InputSearch({ svg, setSvg }: InputSearchProps) {
+function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -47,6 +48,7 @@ function InputSearch({ svg, setSvg }: InputSearchProps) {
   return (
     <AnimatePresence>
       <motion.div
+      ref={searchRef}
         key="container"
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: "auto", opacity: 1 }}
@@ -91,6 +93,7 @@ function InputSearch({ svg, setSvg }: InputSearchProps) {
               onClick={async () => {
                 deleteColumn(columnId);
                 await mutateAsync({ id: columnId });
+                setOnHover("");
               }}
               className="cursor rounded-lg p-1 hover:bg-neutral-100"
             >

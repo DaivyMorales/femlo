@@ -10,6 +10,8 @@ export interface OpenProps {
   setColumnId: (id: string) => void;
   onHover: string;
   setOnHover: (icon: string) => void;
+  isActive: boolean;
+  setIsActive: (id: boolean) => void;
 }
 
 export const useOpen = create<OpenProps>((set) => ({
@@ -20,5 +22,10 @@ export const useOpen = create<OpenProps>((set) => ({
   onHover: "",
   setOnHover: (icon: string) => {
     set(() => ({ onHover: icon }));
+  },
+
+  isActive: false,
+  setIsActive: (value: boolean) => {
+    set(() => ({ isActive: value }));
   },
 }));

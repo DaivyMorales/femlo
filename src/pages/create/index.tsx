@@ -10,14 +10,15 @@ import { LuPlus } from "react-icons/lu";
 import { TbTrash } from "react-icons/tb";
 import Column from "@/components/Column";
 import { Space, useGlobalData } from "@/store/GlobalDataSlice";
+import { useOpen } from "@/store/OpenSlice";
 
 function Create() {
   const query = api.space.getSpaces.useQuery();
   const mutation = api.space.create.useMutation();
-  const [isActive, setIsActive] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
   const { columns, setColumns, createColumn } = useGlobalData();
+  const { setColumnId, columnId } = useOpen();
 
   useEffect(() => {
     if (query.data) {
@@ -40,24 +41,23 @@ function Create() {
         searchRef.current &&
         !searchRef.current.contains(event.target as Node)
       ) {
-        setIsActive(false);
+        setColumnId("");
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const { setSpaces } = useSvgState();
-
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
+    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-10">
       <AnimatePresence mode="popLayout">
         <div className="flex flex-col items-center justify-center gap-5">
           {/* <Toolbar /> */}
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex items-center justify-center gap-6 bg-red-500">
             <button
               onClick={handleAddColumn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
@@ -69,10 +69,10 @@ function Create() {
                 {" "}
                 {columns.map(({ id, companyId }) => (
                   <Column
+                    searchRef={searchRef}
                     key={id}
                     id={id}
                     companyId={companyId || "defaultId"}
-                    setIsActive={setIsActive}
                   />
                 ))}
               </AnimatePresence>
@@ -84,11 +84,6 @@ function Create() {
               <LuPlus color="#a1a1aa" size={10} />
             </button>
           </div>
-          {/* {isActive && (
-            <div ref={searchRef}>
-              <InputSearch  />
-            </div>
-          )} */}
         </div>
       </AnimatePresence>
     </div>

@@ -13,11 +13,11 @@ type SvgIconsType = typeof svgIcons & {
 const Column = ({
   id,
   companyId,
-  setIsActive,
+  searchRef,
 }: {
   id: string;
   companyId: string;
-  setIsActive: React.Dispatch<SetStateAction<boolean>>;
+  searchRef: React.ForwardedRef<HTMLDivElement>;
 }) => {
   const { data, refetch } = api.company.getCompanyById.useQuery({
     id: companyId,
@@ -26,7 +26,6 @@ const Column = ({
   const [svg, setSvg] = useState<svgProps | undefined>(
     data as svgProps | undefined,
   );
-  const [isHovered, setIsHovered] = useState(false); // Local hover state
 
   useEffect(() => {
     refetch();
@@ -37,14 +36,10 @@ const Column = ({
     svg?.svgName || data?.svgName || ""
   ];
 
-  const { onHover, columnId, setColumnId } = useOpen();
+  const { onHover, columnId, setColumnId, setIsActive } = useOpen();
 
   return (
-    <div
-      className="relative"
-    //   onMouseEnter={() => setIsHovered(true)}
-    //   onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="relative">
       <motion.div
         initial={{ scale: 0.9 }}
         key={id}
@@ -76,8 +71,8 @@ const Column = ({
           <span>¿?</span>
         )}
       </motion.div>
-      <div className="absolute -right-[90px] top-[100px]">
-        {columnId === id && <InputSearch svg={svg} setSvg={setSvg} />}
+      <div  className="absolute -right-[86px] top-[100px]">
+        {columnId === id ? <InputSearch searchRef={searchRef} svg={svg} setSvg={setSvg} /> : null}
       </div>
     </div>
   );
