@@ -22,7 +22,7 @@ function Create() {
 
   useEffect(() => {
     if (query.data) {
-      setColumns(query.data);
+      setColumns(query.data as Space[]);
     }
   }, [query.data]);
 
@@ -57,7 +57,7 @@ function Create() {
       <AnimatePresence mode="popLayout">
         <div className="flex flex-col items-center justify-center gap-5">
           {/* <Toolbar /> */}
-          <div className="flex items-center justify-center gap-6 bg-red-500">
+          <div className="flex items-center justify-center gap-6">
             <button
               onClick={handleAddColumn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"

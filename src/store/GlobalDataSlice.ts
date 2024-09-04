@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export interface Space {
   id: string;
-  name: string;
+  name: string | null;
   companyId: string | null;
 }
 
