@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as svgIcons from "../components/svgs";
 import { motion } from "framer-motion";
 import InputSearch from "./InputSearch";
@@ -14,18 +14,18 @@ const Column = ({
   id,
   companyId,
   searchRef,
+  position,
 }: {
   id: string;
   companyId: string;
   searchRef: React.ForwardedRef<HTMLDivElement>;
+  position: 'left' | 'right' | 'center';
 }) => {
   const { data, refetch } = api.company.getCompanyById.useQuery({
     id: companyId,
   });
 
-  const [svg, setSvg] = useState<svgProps | undefined>(
-    data as svgProps | undefined,
-  );
+  const [svg, setSvg] = useState<svgProps | undefined>(data as svgProps | undefined);
 
   useEffect(() => {
     refetch();
@@ -38,22 +38,33 @@ const Column = ({
 
   const { onHover, columnId, setColumnId, setIsActive } = useOpen();
 
+  let rotateValue = 0;
+  if (position === 'left') {
+    rotateValue = 3;
+  } else if (position === 'right') {
+    rotateValue = -3;
+  }
+
   return (
     <div className="relative">
       <motion.div
-        initial={{ scale: 0.9 }}
+        initial={{ scale: 0.9, rotate: 0 }}
         key={id}
         draggable
-        animate={columnId === id ? { scale: 1.2 } : { scale: 1 }}
+        animate={{
+          scale: columnId === id ? 1.2 : 1,
+          rotate: columnId === id ? 0 : rotateValue,
+        }}
         whileHover={{
           scale: columnId === id ? 1.2 : 1.1,
+          rotate: columnId === id ? 0 : rotateValue,
         }}
         whileTap={{ scale: 0.8 }}
         onClick={() => {
           setIsActive(true);
           setColumnId(id);
         }}
-        exit={{ scale: 0 }}
+        exit={{ scale: 0, rotate: 0 }}
         className={`flex h-[80px] w-[130px] cursor-pointer items-center justify-center rounded-xl border-[1px] border-dashed ${
           columnId === id || columnId === "" ? "opacity-100" : "opacity-50"
         } ${
@@ -71,8 +82,10 @@ const Column = ({
           <span>¿?</span>
         )}
       </motion.div>
-      <div  className="absolute -right-[86px] top-[100px]">
-        {columnId === id ? <InputSearch searchRef={searchRef} svg={svg} setSvg={setSvg} /> : null}
+      <div className="absolute -right-[86px] top-[100px]">
+        {columnId === id ? (
+          <InputSearch searchRef={searchRef} svg={svg} setSvg={setSvg} />
+        ) : null}
       </div>
     </div>
   );

@@ -64,7 +64,7 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
         >
           <div className="flex items-center justify-center gap-3">
             <img
-              src="https://pbs.twimg.com/profile_images/1830615369628655616/PbwWqnT5_400x400.png"
+              src="https://ph-avatars.imgix.net/6251705/a9772e75-2fe8-41c2-8d90-04e32d3e8e1e.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=120&h=120&fit=crop&dpr=2"
               alt=""
               width={30}
               height={30}
