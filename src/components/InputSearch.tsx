@@ -17,7 +17,7 @@ export interface svgProps {
 interface InputSearchProps {
   svg: any;
   setSvg: any;
-  searchRef: React.ForwardedRef<HTMLDivElement>;
+  searchRef?: React.ForwardedRef<HTMLDivElement>;
 }
 
 type SvgIconsType = typeof svgIcons & {
@@ -48,7 +48,7 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
   return (
     <AnimatePresence>
       <motion.div
-      ref={searchRef}
+        ref={searchRef}
         key="container"
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: "auto", opacity: 1 }}
@@ -56,9 +56,9 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
         transition={{ duration: 0.2, ease: "easeInOut" }}
         className="flex flex-col items-center justify-center"
       >
-        <div className="h-0 w-0 border-b-[6px] border-l-[8px] border-r-[8px] border-b-neutral-200 border-l-transparent border-r-transparent"></div>
+        <div className="hidden h-0 w-0 border-b-[6px] border-l-[8px] border-r-[8px] border-b-neutral-200 border-l-transparent border-r-transparent"></div>
         <div
-          className={`flex w-[300px] flex-col items-start justify-center gap-3 rounded-xl border-[1px] pt-4 ${
+          className={`flex w-[300px] flex-col items-start justify-center gap-3 rounded-t-xl border-[1px] pt-4 shadow-lg ${
             isFocused ? "border-blue-300 shadow-blue-200" : "border-neutral-200"
           } bg-neutral-50 px-5 pb-3 shadow-sm transition-colors duration-200`}
         >
@@ -116,6 +116,7 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
                     key={id}
                     onClick={() => {
                       setSvg({
+                        columnId,
                         id,
                         svgName,
                         defaultSize,

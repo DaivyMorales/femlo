@@ -12,6 +12,8 @@ export interface OpenProps {
   setOnHover: (icon: string) => void;
   isActive: boolean;
   setIsActive: (id: boolean) => void;
+  openInputSearch: boolean;
+  setOpenInputSearch: (value: boolean) => void;
 }
 
 export const useOpen = create<OpenProps>((set) => ({
@@ -27,5 +29,9 @@ export const useOpen = create<OpenProps>((set) => ({
   isActive: false,
   setIsActive: (value: boolean) => {
     set(() => ({ isActive: value }));
+  },
+  openInputSearch: false,
+  setOpenInputSearch: (value: boolean) => {
+    set(() => ({ openInputSearch: value }));
   },
 }));

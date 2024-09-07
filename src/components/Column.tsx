@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import InputSearch from "./InputSearch";
 import { useOpen } from "@/store/OpenSlice";
 import { svgProps } from "./InputSearch";
+import { CgSpinner } from "react-icons/cg";
+import { BsPlayCircle } from "react-icons/bs";
+import { useSvgState } from "@/store/SvgSlice";
 
 type SvgIconsType = typeof svgIcons & {
   [key: string]: React.ComponentType<any>;
@@ -19,13 +22,30 @@ const Column = ({
   id: string;
   companyId: string;
   searchRef: React.ForwardedRef<HTMLDivElement>;
-  position: 'left' | 'right' | 'center';
+  position: "left" | "right" | "center";
 }) => {
-  const { data, refetch } = api.company.getCompanyById.useQuery({
+  const { data, refetch, isLoading } = api.company.getCompanyById.useQuery({
     id: companyId,
   });
 
-  const [svg, setSvg] = useState<svgProps | undefined>(data as svgProps | undefined);
+  const [svg, setSvg] = useState<svgProps | undefined>(
+    data as svgProps | undefined,
+  );
+
+  const { onHover, columnId, setColumnId, setIsActive, setOpenInputSearch } =
+    useOpen();
+
+  const { svg: svgSelected } = useSvgState();
+
+  useEffect(() => {
+    if (columnId === id) {
+      if (!data || Object.keys(data).length === 0) {
+        setSvg(svgSelected);
+      } else if (data.id !== svgSelected.id) {
+        setSvg(svgSelected);
+      }
+    }
+  }, [columnId, id, data, svgSelected, setSvg]);
 
   useEffect(() => {
     refetch();
@@ -36,12 +56,10 @@ const Column = ({
     svg?.svgName || data?.svgName || ""
   ];
 
-  const { onHover, columnId, setColumnId, setIsActive } = useOpen();
-
   let rotateValue = 0;
-  if (position === 'left') {
+  if (position === "left") {
     rotateValue = 3;
-  } else if (position === 'right') {
+  } else if (position === "right") {
     rotateValue = -3;
   }
 
@@ -63,30 +81,30 @@ const Column = ({
         onClick={() => {
           setIsActive(true);
           setColumnId(id);
+          setOpenInputSearch(true);
         }}
         exit={{ scale: 0, rotate: 0 }}
-        className={`flex h-[80px] w-[130px] cursor-pointer items-center justify-center rounded-xl border-[1px] border-dashed ${
+        className={`flex h-[68px] w-[110px] cursor-pointer items-center justify-center rounded-xl border-[1px] border-dashed ${
           columnId === id || columnId === "" ? "opacity-100" : "opacity-50"
         } ${
           onHover === "delete" && columnId === id
             ? "transition-border-shadow border-red-300 shadow-red-100"
             : "transition-border-shadow border-neutral-200"
-        } bg-neutral-50 font-semibold text-neutral-200 shadow-sm`}
+        } bg-neutral-50 font-semibold text-neutral-200 shadow-sm md:h-[76px] md:w-[124px] lg:md:h-[80px] lg:w-[130px]`}
       >
-        {IconComponent ? (
+        {isLoading ? (
+          <div className="animate-spin text-neutral-500">
+            <CgSpinner size={20} />
+          </div>
+        ) : IconComponent ? (
           <IconComponent
-            className={`${onHover === "delete" && columnId === id ? "fill-red-300" : "fill-neutral-400"} svg-transition`}
-            style={{ fontSize: 90 }}
+            className={` ${onHover === "delete" && columnId === id ? "fill-red-300" : "fill-neutral-400"} svg-transition text-[70px] md:text-[82px] lg:text-[92px]`}
           />
         ) : (
-          <span>¿?</span>
+          <div className="text-neutral-300">¿?</div>
         )}
       </motion.div>
-      <div className="absolute -right-[86px] top-[100px]">
-        {columnId === id ? (
-          <InputSearch searchRef={searchRef} svg={svg} setSvg={setSvg} />
-        ) : null}
-      </div>
+      <div className="absolute -right-[94px] top-[100px]"></div>
     </div>
   );
 };

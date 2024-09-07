@@ -6,15 +6,6 @@ import Column from "./Column";
 import { useOpen } from "@/store/OpenSlice";
 
 const Carousel = () => {
-  const Data = [
-    "https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=662&q=80",
-    "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=689&q=80",
-    "https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80",
-    "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-    "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-    "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=685&q=80",
-  ];
-
   const { columns, setColumns } = useGlobalData();
   const { columnId } = useOpen();
 
@@ -26,6 +17,14 @@ const Carousel = () => {
     }
   }, [query.data]);
 
+  useEffect(() => {
+    if (columns.length > 0) {
+      setLeftId(columns.length - 1);
+      setCenterId(0);
+      setRightId(1);
+    }
+  }, [columns]);
+
   const [FlowDirection, setFlowDirection] = useState(true);
   const [CenterId, setCenterId] = useState(0);
   const [LeftId, setLeftId] = useState(columns.length - 1);
@@ -34,17 +33,17 @@ const Carousel = () => {
   const searchRef = useRef<HTMLDivElement>(null);
 
   const nextBtn = () => {
-    setLeftId((prev) => (prev === columns.length - 1 ? 0 : prev + 1));
-    setCenterId((prev) => (prev === columns.length - 1 ? 0 : prev + 1));
-    setRightId((prev) => (prev === columns.length - 1 ? 0 : prev + 1));
+    setLeftId(CenterId); // El antiguo centro se convierte en el nuevo izquierda
+    setCenterId(RightId); // El antiguo derecha se convierte en el nuevo centro
+    setRightId((prev) => (prev + 1) % columns.length); // La siguiente columna en la secuencia
     setFlowDirection(true);
   };
 
   const prevBtn = () => {
     setFlowDirection(false);
-    setLeftId((prev) => (prev === 0 ? columns.length - 1 : prev - 1));
-    setCenterId((prev) => (prev === 0 ? columns.length - 1 : prev - 1));
-    setRightId((prev) => (prev === 0 ? columns.length - 1 : prev - 1));
+    setRightId(CenterId); // El antiguo centro se convierte en el nuevo derecha
+    setCenterId(LeftId); // El antiguo izquierda se convierte en el nuevo centro
+    setLeftId((prev) => (prev - 1 + columns.length) % columns.length); // La columna anterior en la secuencia
   };
 
   const variants = {
@@ -54,7 +53,6 @@ const Carousel = () => {
       scale: 1.1,
       zIndex: 5,
       filter: "brightness(100%)",
-      boxShadow: "0px 0px 30px 0px rgba(0,0,0,0.3)",
       transition: {
         type: "spring",
         duration: 1,
@@ -84,32 +82,24 @@ const Carousel = () => {
         duration: 1,
       },
     },
-    rightHidden: {
-      x: "8rem",
-      scale: 0,
+    hidden: {
+      x: "10rem", 
       opacity: 0,
-    },
-    leftHidden: {
-      x: "-8rem",
       scale: 0,
-      opacity: 0,
+      zIndex: 1,
     },
   };
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-10">
-      <pre>{JSON.stringify(columns, null, 2)}</pre>
-      <div className="flex gap-10">
-        <p>{LeftId}</p>
-        <p>{CenterId}</p> <p>{RightId}</p>
-      </div>
-      <motion.div className="grid place-content-center rounded-2xl bg-red-500">
-        <motion.div className="relative h-40 w-40 flex justify-center items-center bg-blue-500">
+      <motion.div className="grid place-content-center rounded-2xl">
+        <motion.div className="relative flex h-40 w-[600px] items-center justify-center bg-red-500 p-10">
           <AnimatePresence initial={false}>
             {columns && (
               <AnimatePresence mode="popLayout">
-                {columns.map(({ id, companyId }, index) => {
-                  let position: "left" | "right" | "center" = "center";
+                {columns.map((column, index) => {
+                  let position: "center" | "left" | "right" | "hidden" =
+                    "hidden";
 
                   if (index === LeftId) {
                     position = "left";
@@ -121,7 +111,7 @@ const Carousel = () => {
 
                   return (
                     <motion.div
-                      key={id}
+                      key={column.id}
                       variants={variants}
                       initial={
                         FlowDirection
@@ -135,43 +125,20 @@ const Carousel = () => {
                       className="absolute"
                     >
                       <Column
+                        key={column.id}
+                        {...column}
+                        companyId={column.companyId || ""}
+                        position={position as "center" | "left" | "right"}
                         searchRef={searchRef}
-                        key={id}
-                        id={id}
-                        companyId={companyId || "defaultId"}
-                        position={position}
                       />
                     </motion.div>
                   );
                 })}
               </AnimatePresence>
             )}
-            {/* <motion.div
-              key={LeftId}
-              variants={variants}
-              initial={FlowDirection ? "center" : "leftHidden"}
-              animate="left"
-              exit={"leftHidden"}
-              className="absolute h-40 w-40 rounded-full bg-yellow-300 bg-cover bg-center bg-no-repeat"
-            ></motion.div>
-            <motion.div
-              key={CenterId}
-              variants={variants}
-              initial={FlowDirection ? "right" : "left"}
-              animate="center"
-              className="absolute h-40 w-40 rounded-full bg-cover bg-center bg-no-repeat"
-            ></motion.div>
-            <motion.div
-              key={RightId}
-              variants={variants}
-              initial={FlowDirection ? "rightHidden" : "center"}
-              animate="right"
-              exit={"rightHidden"}
-              className="absolute h-40 w-40 rounded-full bg-cover bg-center bg-no-repeat"
-            ></motion.div> */}
           </AnimatePresence>
         </motion.div>
-        <div className="z-10 my-8 flex justify-center gap-4 bg-yellow-500">
+        <div className="z-10 my-8 flex justify-center gap-4">
           <motion.button
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}

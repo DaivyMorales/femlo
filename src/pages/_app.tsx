@@ -17,6 +17,7 @@ import { Providers } from "../components/nextui/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Head from "next/head";
+import InputSearch from "@/components/InputSearch";
 
 const Satochi = localfont({
   src: [
@@ -59,9 +60,9 @@ const Faktum = localfont({
 });
 
 const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat" });
-const m_plus = M_PLUS_Rounded_1c({ 
-  subsets: ["latin"], 
-  weight: ["100", "300", "400", "500", "700", "800", "900"]
+const m_plus = M_PLUS_Rounded_1c({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "800", "900"],
 });
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -106,11 +107,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
         </Head>
         <main
-          className={`font-satochi ${m_plus.className}  ${caveat.variable} ${Faktum.variable}`}
+          className={`font-satochi ${m_plus.className} ${caveat.variable} ${Faktum.variable}`}
         >
           {/* <Navbar> */}
-            <Component {...pageProps} />
-            {/* <Footer /> */}
+          <Component {...pageProps} />
+          {/* <Footer /> */}
           {/* </Navbar> */}
         </main>
       </Providers>

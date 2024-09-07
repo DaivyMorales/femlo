@@ -6,14 +6,20 @@ import Column from "@/components/Column";
 import { Space, useGlobalData } from "@/store/GlobalDataSlice";
 import { useOpen } from "@/store/OpenSlice";
 import { motion } from "framer-motion";
+import InputSearch from "@/components/InputSearch";
+import { useSvgState } from "@/store/SvgSlice";
+import { BsPlayCircle } from "react-icons/bs";
 
 function Create() {
   const query = api.space.getSpaces.useQuery();
   const mutation = api.space.create.useMutation();
   const searchRef = useRef<HTMLDivElement>(null);
 
+  const [svgSelected, setSvgSelected] = useState({});
+
   const { columns, setColumns, createColumn } = useGlobalData();
   const { setColumnId, columnId } = useOpen();
+  const { setSvg, svg } = useSvgState();
 
   //CAROUSEL
   const [FlowDirection, setFlowDirection] = useState(true);
@@ -22,17 +28,17 @@ function Create() {
   const [RightId, setRightId] = useState(1);
 
   const nextBtn = () => {
-    setLeftId((prev) => (prev === columns.length - 1 ? 0 : prev + 1));
-    setCenterId((prev) => (prev === columns.length - 1 ? 0 : prev + 1));
-    setRightId((prev) => (prev === columns.length - 1 ? 0 : prev + 1));
+    setLeftId(CenterId);
+    setCenterId(RightId);
+    setRightId((prev) => (prev + 1) % columns.length);
     setFlowDirection(true);
   };
 
   const prevBtn = () => {
     setFlowDirection(false);
-    setLeftId((prev) => (prev === 0 ? columns.length - 1 : prev - 1));
-    setCenterId((prev) => (prev === 0 ? columns.length - 1 : prev - 1));
-    setRightId((prev) => (prev === 0 ? columns.length - 1 : prev - 1));
+    setRightId(CenterId);
+    setCenterId(LeftId);
+    setLeftId((prev) => (prev - 1 + columns.length) % columns.length);
   };
 
   useEffect(() => {
@@ -40,6 +46,14 @@ function Create() {
       setColumns(query.data as Space[]);
     }
   }, [query.data]);
+
+  useEffect(() => {
+    if (columns.length > 0) {
+      setLeftId(columns.length - 1);
+      setCenterId(0);
+      setRightId(1);
+    }
+  }, [columns]);
 
   const handleAddColumn = async () => {
     try {
@@ -74,7 +88,6 @@ function Create() {
       scale: 1.1,
       zIndex: 5,
       filter: "brightness(100%)",
-      boxShadow: "0px 0px 30px 0px rgba(0,0,0,0.3)",
       transition: {
         type: "spring",
         duration: 1,
@@ -83,7 +96,7 @@ function Create() {
     left: {
       x: "-6rem",
       opacity: 1,
-      filter: "brightness(40%)",
+      filter: "brightness(55%)",
       scale: 1,
       zIndex: 4,
       boxShadow: "unset",
@@ -95,7 +108,7 @@ function Create() {
     right: {
       x: "6rem",
       opacity: 1,
-      filter: "brightness(40%)",
+      filter: "brightness(55%)",
       scale: 1,
       boxShadow: "unset",
       zIndex: 3,
@@ -104,23 +117,22 @@ function Create() {
         duration: 1,
       },
     },
-    rightHidden: {
-      x: "8rem",
-      scale: 0,
+    hidden: {
+      x: "10rem",
       opacity: 0,
-    },
-    leftHidden: {
-      x: "-8rem",
       scale: 0,
-      opacity: 0,
+      zIndex: 1,
     },
   };
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-10">
-      <AnimatePresence mode="popLayout">
-        <div className="flex flex-col items-center justify-center gap-5">
-          <div className="flex items-center justify-center gap-6">
+    <div
+      className={`flex h-screen w-screen flex-col items-center justify-${columnId !== "" ? "between" : "center"} px-10`}
+    >
+      <div></div>
+      <div className="">
+        <AnimatePresence mode="popLayout">
+          <div className="flex items-center justify-between gap-3">
             <button
               onClick={prevBtn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
@@ -133,50 +145,6 @@ function Create() {
             >
               <LuPlus color="#a1a1aa" size={10} />
             </button>
-            <motion.div className="relative h-40 w-[500px] bg-blue-500">
-              <AnimatePresence initial={false}>
-                {columns && (
-                  <AnimatePresence mode="popLayout">
-                    {columns.map(({ id, companyId }, index) => {
-                      let position: "left" | "right" | "center" = "center";
-
-                      if (index === LeftId) {
-                        position = "left";
-                      } else if (index === CenterId) {
-                        position = "center";
-                      } else if (index === RightId) {
-                        position = "right";
-                      }
-
-                      return (
-                        <motion.div
-                          key={id}
-                          variants={variants}
-                          initial={
-                            FlowDirection
-                              ? position === "left"
-                                ? "rightHidden"
-                                : "leftHidden"
-                              : "leftHidden"
-                          }
-                          animate={position}
-                          exit={FlowDirection ? "rightHidden" : "leftHidden"}
-                          className="absolute"
-                        >
-                          <Column
-                            searchRef={searchRef}
-                            key={id}
-                            id={id}
-                            companyId={companyId || "defaultId"}
-                            position={position}
-                          />
-                        </motion.div>
-                      );
-                    })}
-                  </AnimatePresence>
-                )}
-              </AnimatePresence>
-            </motion.div>
             <button
               onClick={handleAddColumn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
@@ -184,14 +152,74 @@ function Create() {
               <LuPlus color="#a1a1aa" size={10} />
             </button>
             <button
-              onClick={prevBtn}
+              onClick={nextBtn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
             >
               Next
             </button>
+            <button
+              onClick={nextBtn}
+              className="jsutify-center flex items-center gap-1 rounded-[10px] border-[1px] border-blue-700 bg-blue-600 p-1 px-3 text-xs font-medium text-black text-white shadow-sm"
+            >
+              <BsPlayCircle /> Play
+            </button>
           </div>
+          <div className="flex flex-col items-center justify-center gap-5">
+            <div className="flex items-center justify-center gap-6">
+              <motion.div className="relative flex h-40 w-[280px] items-center justify-center">
+                <AnimatePresence initial={false}>
+                  {columns && (
+                    <AnimatePresence mode="popLayout">
+                      {columns.map((column, index) => {
+                        let position: "center" | "left" | "right" | "hidden" =
+                          "hidden";
+
+                        if (index === LeftId) {
+                          position = "left";
+                        } else if (index === CenterId) {
+                          position = "center";
+                        } else if (index === RightId) {
+                          position = "right";
+                        }
+
+                        return (
+                          <motion.div
+                            key={column.id}
+                            variants={variants}
+                            initial={
+                              FlowDirection
+                                ? position === "left"
+                                  ? "rightHidden"
+                                  : "leftHidden"
+                                : "leftHidden"
+                            }
+                            animate={position}
+                            exit={FlowDirection ? "rightHidden" : "leftHidden"}
+                            className="absolute"
+                          >
+                            <Column
+                              key={column.id}
+                              {...column}
+                              companyId={column.companyId || ""}
+                              position={position as "center" | "left" | "right"}
+                              searchRef={searchRef}
+                            />
+                          </motion.div>
+                        );
+                      })}
+                    </AnimatePresence>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </div>
+          </div>
+        </AnimatePresence>
+      </div>
+      {columnId !== "" && (
+        <div className="">
+          <InputSearch svg={svg} setSvg={setSvg} searchRef={searchRef} />
         </div>
-      </AnimatePresence>
+      )}
     </div>
   );
 }
