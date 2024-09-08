@@ -125,11 +125,24 @@ function Create() {
     },
   };
 
+
+  useEffect(() => {
+    if (columnId === "") {
+      setSvg({
+        id: "",
+        svgName: "",
+        defaultSize: "",
+      });
+    }
+  }, [columnId]);
+
   return (
     <div
       className={`flex h-screen w-screen flex-col items-center justify-${columnId !== "" ? "between" : "center"} px-10`}
     >
-      <div></div>
+      <div>
+        {/* <pre>{JSON.stringify(svg, null, 2)}</pre> */}
+      </div>
       <div className="">
         <AnimatePresence mode="popLayout">
           <div className="flex items-center justify-between gap-3">
