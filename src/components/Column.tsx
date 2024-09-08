@@ -37,15 +37,16 @@ const Column = ({
 
   const { svg: svgSelected } = useSvgState();
 
+useEffect(() => {
+  setSvg(data)
+}, [])
+
+
   useEffect(() => {
     if (columnId === id) {
-      if (!data || Object.keys(data).length === 0) {
-        setSvg(svgSelected);
-      } else if (data.id !== svgSelected.id) {
-        setSvg(svgSelected);
-      }
+      setSvg(svgSelected);
     }
-  }, [columnId, id, data, svgSelected, setSvg]);
+  }, [columnId, svgSelected]);
 
   useEffect(() => {
     refetch();
@@ -92,11 +93,10 @@ const Column = ({
             : "transition-border-shadow border-neutral-200"
         } bg-neutral-50 font-semibold text-neutral-200 shadow-sm md:h-[76px] md:w-[124px] lg:md:h-[80px] lg:w-[130px]`}
       >
-        {isLoading ? (
-          <div className="animate-spin text-neutral-500">
-            <CgSpinner size={20} />
-          </div>
-        ) : IconComponent ? (
+        {/* <p className="text-[7px] font-normal text-black">
+          <pre>{JSON.stringify(svg, null, 2)}</pre>
+        </p> */}
+        {IconComponent && svg ? (
           <IconComponent
             className={` ${onHover === "delete" && columnId === id ? "fill-red-300" : "fill-neutral-400"} svg-transition text-[70px] md:text-[82px] lg:text-[92px]`}
           />

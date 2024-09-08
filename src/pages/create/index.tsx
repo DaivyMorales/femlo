@@ -152,12 +152,7 @@ function Create() {
             >
               Back
             </button>
-            <button
-              onClick={handleAddColumn}
-              className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
-            >
-              <LuPlus color="#a1a1aa" size={10} />
-            </button>
+          
             <button
               onClick={handleAddColumn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
@@ -197,7 +192,7 @@ function Create() {
 
                         return (
                           <motion.div
-                            key={column.id}
+                            key={index}
                             variants={variants}
                             initial={
                               FlowDirection
@@ -211,7 +206,6 @@ function Create() {
                             className="absolute"
                           >
                             <Column
-                              key={column.id}
                               {...column}
                               companyId={column.companyId || ""}
                               position={position as "center" | "left" | "right"}
