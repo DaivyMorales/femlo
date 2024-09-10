@@ -223,7 +223,7 @@ function Create() {
         </AnimatePresence>
       </div>
       {columnId !== "" && (
-        <div className="">
+        <div>
           <InputSearch svg={svg} setSvg={setSvg} searchRef={searchRef} />
         </div>
       )}

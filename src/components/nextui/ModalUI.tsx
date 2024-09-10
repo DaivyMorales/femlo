@@ -57,7 +57,6 @@ export default function ModalUI({ size, text }: ModalProps) {
       email: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
 
       try {
         mutation.mutate({ email: values.email });
