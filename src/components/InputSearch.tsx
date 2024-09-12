@@ -39,7 +39,7 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
     }
   }, [searchTerm, refetch]);
 
-  const { columnId, setOnHover } = useOpen();
+  const { columnId, setOnHover, setShowInfoHover, showInfoHover } = useOpen();
   const { deleteColumn } = useGlobalData();
 
   const { mutate, error } = api.space.updateSpace.useMutation();
@@ -95,12 +95,15 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
                 await mutateAsync({ id: columnId });
                 setOnHover("");
               }}
-              className="cursor rounded-lg p-1 hover:bg-neutral-100"
+              className="cursor rounded-lg p-1 hover:bg-neutral-100 hover:text-red-400"
             >
               <TbTrash size={18} />
             </button>
-            <button className="cursor">
-              <TbPolaroid size={20} />
+            <button
+              onClick={() => setShowInfoHover(!showInfoHover)}
+              className={`${showInfoHover ? "text-green-400 bg-neutral-100" : "" } rounded-lg p-1 hover:bg-neutral-100 hover:text-green-400`}
+            >
+              <TbPolaroid size={18} />
             </button>
             <button className="cursor">
               <TbSend size={18} />

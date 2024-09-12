@@ -60,6 +60,12 @@ function Create() {
     try {
       const newColumn = await mutation.mutateAsync();
       createColumn(newColumn);
+
+      const newColumnIndex = columns.length;
+      setLeftId(newColumnIndex - 1);
+      setCenterId(newColumnIndex);
+      setRightId((newColumnIndex + 1) % (columns.length + 1));
+      setFlowDirection(true);
     } catch (error) {
       console.error("Error creating column:", error);
     }
@@ -162,7 +168,7 @@ function Create() {
             <div className="flex items-center justify-center gap-16">
               <button
                 onClick={prevBtn}
-                className="hidden md:inline-flex rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm "
+                className="hidden rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm md:inline-flex"
               >
                 <TbArrowLeft size={15} />
               </button>
@@ -212,7 +218,7 @@ function Create() {
               </motion.div>
               <button
                 onClick={nextBtn}
-                className="hidden md:inline-flex rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm"
+                className="hidden rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm md:inline-flex"
               >
                 <TbArrowRight size={15} />
               </button>

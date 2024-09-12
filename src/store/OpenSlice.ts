@@ -10,6 +10,8 @@ export interface OpenProps {
   setColumnId: (id: string) => void;
   onHover: string;
   setOnHover: (icon: string) => void;
+  showInfoHover: boolean;
+  setShowInfoHover: (option: boolean) => void;
   isActive: boolean;
   setIsActive: (id: boolean) => void;
   openInputSearch: boolean;
@@ -20,6 +22,10 @@ export const useOpen = create<OpenProps>((set) => ({
   columnId: "",
   setColumnId: (id: string) => {
     set(() => ({ columnId: id }));
+  },
+  showInfoHover: false,
+  setShowInfoHover: (option: boolean) => {
+    set(() => ({ showInfoHover: option }));
   },
   onHover: "",
   setOnHover: (icon: string) => {

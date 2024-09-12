@@ -8,6 +8,7 @@ import { svgProps } from "./InputSearch";
 import { CgSpinner } from "react-icons/cg";
 import { BsPlayCircle } from "react-icons/bs";
 import { useSvgState } from "@/store/SvgSlice";
+import { Tooltip, Button } from "@nextui-org/react";
 
 type SvgIconsType = typeof svgIcons & {
   [key: string]: React.ComponentType<any>;
@@ -32,8 +33,14 @@ const Column = ({
     data as svgProps | undefined,
   );
 
-  const { onHover, columnId, setColumnId, setIsActive, setOpenInputSearch } =
-    useOpen();
+  const {
+    onHover,
+    columnId,
+    setColumnId,
+    setIsActive,
+    setOpenInputSearch,
+    showInfoHover,
+  } = useOpen();
 
   const { svg: svgSelected } = useSvgState();
 
@@ -100,10 +107,6 @@ const Column = ({
             : "transition-border-shadow border-neutral-200"
         } bg-neutral-50 font-semibold text-neutral-200 shadow-sm md:h-[76px] md:w-[124px] lg:md:h-[80px] lg:w-[130px]`}
       >
-        {/* <p className="text-[7px] font-normal text-black">
-          <pre>{JSON.stringify(svg, null, 2)}</pre>
-        </p> */}
-
         {IconComponent && svg ? (
           <IconComponent
             className={` ${onHover === "delete" && columnId === id ? "fill-red-300" : "fill-neutral-400"} svg-transition text-[70px] md:text-[82px] lg:text-[92px]`}
@@ -112,7 +115,22 @@ const Column = ({
           <div className="text-neutral-300">¿?</div>
         )}
       </motion.div>
-      <div className="absolute -right-[94px] top-[100px]"></div>
+      {position === "center" && showInfoHover && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: 1 }}
+          className="absolute -left-[10px] top-[100px] flex flex-col items-center justify-center"
+        >
+          <div className="relative h-0 w-0 border-b-[6px] border-l-[6px] border-r-[6px] border-b-neutral-100 border-l-transparent border-r-transparent"></div>
+          <div className="flex w-[150px] flex-col gap-1 rounded-xl border-[0.6px] bg-white p-2 text-[9px] shadow-sm">
+            <span className="text-[9px] font-bold">{data?.svgName}</span>
+            <span className="text-[7px]">
+              Lorem ipsum dolor sit, amet consectetur br adipisicing elit.
+              Nulla, qui?
+            </span>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };
