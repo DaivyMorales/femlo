@@ -37,10 +37,9 @@ const Column = ({
 
   const { svg: svgSelected } = useSvgState();
 
-useEffect(() => {
-  setSvg(data)
-}, [])
-
+  useEffect(() => {
+    setSvg(data);
+  }, []);
 
   useEffect(() => {
     if (columnId === id) {
@@ -52,6 +51,12 @@ useEffect(() => {
     refetch();
     setSvg(data as svgProps);
   }, [id, data]);
+
+  useEffect(() => {
+    if (columnId === "") {
+      refetch();
+    }
+  }, [columnId]);
 
   const IconComponent = (svgIcons as SvgIconsType)[
     svg?.svgName || data?.svgName || ""
@@ -75,14 +80,16 @@ useEffect(() => {
           rotate: columnId === id ? 0 : rotateValue,
         }}
         whileHover={{
-          scale: columnId === id ? 1.2 : 1.1,
-          rotate: columnId === id ? 0 : rotateValue,
+          scale: position === "center" ? 1.2 : 1,
+          rotate: position === "center" ? 0 : rotateValue,
         }}
-        whileTap={{ scale: 0.8 }}
+        whileTap={{ scale: position === "center" ? 0.8 : 1 }}
         onClick={() => {
-          setIsActive(true);
-          setColumnId(id);
-          setOpenInputSearch(true);
+          if (position === "center") {
+            setIsActive(true);
+            setColumnId(id);
+            setOpenInputSearch(true);
+          }
         }}
         exit={{ scale: 0, rotate: 0 }}
         className={`flex h-[68px] w-[110px] cursor-pointer items-center justify-center rounded-xl border-[1px] border-dashed ${
@@ -96,6 +103,7 @@ useEffect(() => {
         {/* <p className="text-[7px] font-normal text-black">
           <pre>{JSON.stringify(svg, null, 2)}</pre>
         </p> */}
+
         {IconComponent && svg ? (
           <IconComponent
             className={` ${onHover === "delete" && columnId === id ? "fill-red-300" : "fill-neutral-400"} svg-transition text-[70px] md:text-[82px] lg:text-[92px]`}

@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import InputSearch from "@/components/InputSearch";
 import { useSvgState } from "@/store/SvgSlice";
 import { BsPlayCircle } from "react-icons/bs";
+import { TbArrowLeft, TbArrowRight } from "react-icons/tb";
 
 function Create() {
   const query = api.space.getSpaces.useQuery();
@@ -125,7 +126,6 @@ function Create() {
     },
   };
 
-
   useEffect(() => {
     if (columnId === "") {
       setSvg({
@@ -140,31 +140,17 @@ function Create() {
     <div
       className={`flex h-screen w-screen flex-col items-center justify-${columnId !== "" ? "between" : "center"} px-10`}
     >
-      <div>
-        {/* <pre>{JSON.stringify(svg, null, 2)}</pre> */}
-      </div>
+      <div></div>
       <div className="">
         <AnimatePresence mode="popLayout">
           <div className="flex items-center justify-between gap-3">
-            <button
-              onClick={prevBtn}
-              className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
-            >
-              Back
-            </button>
-          
             <button
               onClick={handleAddColumn}
               className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
             >
               <LuPlus color="#a1a1aa" size={10} />
             </button>
-            <button
-              onClick={nextBtn}
-              className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-black text-white shadow-sm"
-            >
-              Next
-            </button>
+
             <button
               onClick={nextBtn}
               className="jsutify-center flex items-center gap-1 rounded-[10px] border-[1px] border-blue-700 bg-blue-600 p-1 px-3 text-xs font-medium text-black text-white shadow-sm"
@@ -173,7 +159,13 @@ function Create() {
             </button>
           </div>
           <div className="flex flex-col items-center justify-center gap-5">
-            <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center justify-center gap-16">
+              <button
+                onClick={prevBtn}
+                className="hidden md:inline-flex rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm "
+              >
+                <TbArrowLeft size={15} />
+              </button>
               <motion.div className="relative flex h-40 w-[280px] items-center justify-center">
                 <AnimatePresence initial={false}>
                   {columns && (
@@ -218,6 +210,26 @@ function Create() {
                   )}
                 </AnimatePresence>
               </motion.div>
+              <button
+                onClick={nextBtn}
+                className="hidden md:inline-flex rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm"
+              >
+                <TbArrowRight size={15} />
+              </button>
+            </div>
+            <div className="flex gap-4 md:hidden">
+              <button
+                onClick={prevBtn}
+                className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm"
+              >
+                <TbArrowLeft size={15} />
+              </button>
+              <button
+                onClick={nextBtn}
+                className="rounded-full border-[1px] bg-white p-1 text-xs font-medium text-neutral-600 text-white shadow-sm"
+              >
+                <TbArrowRight size={15} />
+              </button>
             </div>
           </div>
         </AnimatePresence>

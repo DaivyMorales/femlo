@@ -4,7 +4,7 @@ import * as svgIcons from "./svgs";
 import { AnimatePresence, motion } from "framer-motion";
 import { api } from "@/utils/api";
 import { useSvgState } from "@/store/SvgSlice";
-import { TbTrash } from "react-icons/tb";
+import { TbTrash, TbPolaroid } from "react-icons/tb";
 import { useOpen } from "@/store/OpenSlice";
 import { useGlobalData } from "@/store/GlobalDataSlice";
 
@@ -100,7 +100,7 @@ function InputSearch({ svg, setSvg, searchRef }: InputSearchProps) {
               <TbTrash size={18} />
             </button>
             <button className="cursor">
-              <TbArtboard size={20} />
+              <TbPolaroid size={20} />
             </button>
             <button className="cursor">
               <TbSend size={18} />
